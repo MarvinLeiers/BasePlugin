@@ -23,6 +23,11 @@ public class BasePlayer
         this.player = player;
     }
 
+    public boolean hasBase()
+    {
+        return customConfig.isSet("base") && !customConfig.getString("base").equals("");
+    }
+
     public Base getBase()
     {
         return base;

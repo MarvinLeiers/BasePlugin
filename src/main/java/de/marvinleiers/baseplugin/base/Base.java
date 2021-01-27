@@ -1,11 +1,16 @@
 package de.marvinleiers.baseplugin.base;
 
+import de.marvinleiers.baseplugin.utils.Schematic;
 import de.marvinleiers.customconfig.CustomConfig;
 import de.marvinleiers.baseplugin.BasePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -66,7 +71,27 @@ public class Base
     {
         baseHearth.getBlock().setType(Material.CHEST);
 
+        Schematic.paste(baseHearth.getBlockX(), baseHearth.getBlockY(), baseHearth.getBlockZ());
+        createBaseHearthChest(baseHearth.getBlock(), BasePlugin.getBasePlayer(player));
+
+        for (Entity entity : baseHearth.getWorld().getNearbyEntities(baseHearth, 3, 3, 3))
+        {
+            if (entity instanceof ArmorStand)
+                entity.remove();
+        }
+
         return new Base(baseHearth, player, UUID.randomUUID());
+    }
+
+    private static Chest createBaseHearthChest(Block block, BasePlayer basePlayer)
+    {
+        if (block.getType() != Material.CHEST)
+            throw new UnsupportedOperationException("BaseHearth must be a chest!");
+
+        Chest chest = (Chest) block.getState();
+        chest.setCustomName("§6" + basePlayer.getPlayer().getName() + "'s Base");
+
+        return chest;
     }
 
     public static void loadBases()

@@ -1,7 +1,10 @@
 package de.marvinleiers.baseplugin.listeners;
 
+import de.marvinleiers.baseplugin.BasePlugin;
 import de.marvinleiers.baseplugin.base.Base;
+import de.marvinleiers.baseplugin.base.BasePlayer;
 import de.marvinleiers.baseplugin.utils.LocationUtil;
+import de.marvinleiers.marvinplugin.utils.Messages;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +24,14 @@ public class RightClickBaseHeartListener implements Listener
 
         if (block.getType() != Material.EMERALD_BLOCK)
             return;
+
+        BasePlayer basePlayer = BasePlugin.getBasePlayer(event.getPlayer());
+
+        if (basePlayer.hasBase())
+        {
+            basePlayer.getPlayer().sendMessage(Messages.get("already-has-base"));
+            return;
+        }
 
         for (Location location : LocationUtil.getBaseHeartsLocations())
         {

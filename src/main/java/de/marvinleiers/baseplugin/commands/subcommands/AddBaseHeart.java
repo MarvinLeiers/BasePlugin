@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class AddBaseHeart extends Subcommand
@@ -43,6 +45,12 @@ public class AddBaseHeart extends Subcommand
 
         Block block = world.getBlockAt(location);
         block.setType(Material.EMERALD_BLOCK);
+
+        ArmorStand armorStand = (ArmorStand) world.spawnEntity(block.getLocation().add(0.5, 0, 0.5), EntityType.ARMOR_STAND);
+        armorStand.setVisible(false);
+        armorStand.setCustomName(Messages.get("hologram-title"));
+        armorStand.setCustomNameVisible(true);
+        armorStand.setGravity(false);
 
         player.teleport(block.getLocation().add(0.5, 1, 0.5));
 
